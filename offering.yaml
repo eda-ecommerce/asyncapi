@@ -1,0 +1,162 @@
+asyncapi: 3.0.0
+info:
+  title: Offering Service
+  version: 1.0.0
+defaultContentType: application/json
+channels:
+  product:
+    address: 'product'
+    description: The topic on which products may be produced and consumed.
+    messages:
+      ProductReceived:
+        $ref: '#/components/messages/ProductReceived'
+  offering:
+    address: 'offering'
+    description: The topic on which offerings may be produced and consumed.
+    messages:
+      OfferingCreated:
+        $ref: '#/components/messages/OfferingCreated'
+      OfferingUpdated:
+        $ref: '#/components/messages/OfferingUpdated'
+      OfferingDeleted:
+        $ref: '#/components/messages/OfferingDeleted'
+operations:
+  receivedProduct:
+    action: receive
+    channel:
+      $ref: '#/channels/product'
+    messages:
+      - $ref: '#/channels/product/messages/ProductReceived'
+  createdOffering:
+    action: send
+    channel:
+      $ref: '#/channels/offering'
+    messages:
+      - $ref: '#/channels/offering/messages/OfferingCreated'
+  updatedOffering:
+    action: send
+    channel:
+      $ref: '#/channels/offering'
+    messages:
+      - $ref: '#/channels/offering/messages/OfferingUpdated'
+  deletedOffering:
+    action: send
+    channel:
+      $ref: '#/channels/offering'
+    messages:
+      - $ref: '#/channels/offering/messages/OfferingDeleted'
+  
+components:
+  messages:
+    ProductReceived:
+      name: ProductReceived
+      contentType: application/json
+      payload:
+        type: object
+        $ref: '#/components/schemas/Product'
+      headers:
+        type: object
+        properties:
+          source:
+            description: Name of the aggregate which emits the event
+            type: string
+            const: "Offering"
+          timestamp:
+            description: UNIX Timestamp 
+            type: number
+            format: unix
+          operation:
+            description: Type of the event
+            type: string
+    OfferingCreated:
+      name: OfferingCreated
+      contentType: application/json
+      payload:
+        type: object
+        $ref: '#/components/schemas/Offering'
+      headers:
+        type: object
+        properties:
+          source:
+            description: Name of the aggregate which emits the event
+            type: string
+            const: "offering"
+          timestamp:
+            description: UNIX Timestamp 
+            type: number
+            format: unix
+          operation:
+            description: Type of the event
+            type: string
+            const: "created"
+    OfferingUpdated:
+      name: OfferingUpdated
+      contentType: application/json
+      payload:
+        type: object
+        $ref: '#/components/schemas/Offering'
+      headers:
+        type: object
+        properties:
+          source:
+            description: Name of the service which emits the event
+            type: string
+            const: "offering"
+          timestamp:
+            description: UNIX Timestamp 
+            type: number
+            format: unix
+          operation:
+            description: Type of the event
+            type: string
+            const: "updated"
+    OfferingDeleted:
+      name: OfferingDeleted
+      contentType: application/json
+      payload:
+        type: object
+        $ref: '#/components/schemas/Offering'
+      headers:
+        type: object
+        properties:
+          source:
+            description: Name of the service which emits the event
+            type: string
+            const: "offering"
+          timestamp:
+            description: UNIX Timestamp 
+            type: number
+            format: unix
+          operation:
+            description: Type of the event
+            type: string
+            const: "deleted"
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        color:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum:
+            - "active"
+            - "retired"
+    Offering:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        productId:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+        price:
+          type: number
