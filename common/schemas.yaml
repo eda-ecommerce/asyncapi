@@ -1,0 +1,35 @@
+asyncapi: 3.0.0
+info:
+  title: Schemas
+  version: 1.0.0
+defaultContentType: application/json
+components:
+  schemas:
+    Offering:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        productId:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+        price:
+          type: number
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        color:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum:
+            - "active"
+            - "retired"

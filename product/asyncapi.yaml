@@ -40,7 +40,7 @@ components:
       contentType: application/json
       payload:
         type: object
-        $ref: '#/components/schemas/Product'
+        $ref: '../common/schemas.yaml#/components/schemas/Product'
       headers:
         type: object
         properties:
@@ -61,7 +61,7 @@ components:
       contentType: application/json
       payload:
         type: object
-        $ref: '#/components/schemas/Product'
+        $ref: '../common/schemas.yaml#/components/schemas/Product'
       headers:
         type: object
         properties:
@@ -82,7 +82,7 @@ components:
       contentType: application/json
       payload:
         type: object
-        $ref: '#/components/schemas/Product'
+        $ref: '../common/schemas.yaml#/components/schemas/Product'
       headers:
         type: object
         properties:
@@ -98,19 +98,3 @@ components:
             description: Type of the event
             type: string
             const: "deleted"
-  schemas:
-    Product:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        color:
-          type: string
-        description:
-          type: string
-        status:
-          type: string
-          enum:
-            - "active"
-            - "retired"

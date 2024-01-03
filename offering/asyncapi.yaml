@@ -5,46 +5,46 @@ info:
 defaultContentType: application/json
 channels:
   product:
-    address: 'product'
+    address: "product"
     description: The topic on which products may be produced and consumed.
     messages:
       ProductReceived:
-        $ref: '#/components/messages/ProductReceived'
+        $ref: "#/components/messages/ProductReceived"
   offering:
-    address: 'offering'
+    address: "offering"
     description: The topic on which offerings may be produced and consumed.
     messages:
       OfferingCreated:
-        $ref: '#/components/messages/OfferingCreated'
+        $ref: "#/components/messages/OfferingCreated"
       OfferingUpdated:
-        $ref: '#/components/messages/OfferingUpdated'
+        $ref: "#/components/messages/OfferingUpdated"
       OfferingDeleted:
-        $ref: '#/components/messages/OfferingDeleted'
+        $ref: "#/components/messages/OfferingDeleted"
 operations:
   receivedProduct:
     action: receive
     channel:
-      $ref: '#/channels/product'
+      $ref: "#/channels/product"
     messages:
-      - $ref: '#/channels/product/messages/ProductReceived'
+      - $ref: "#/channels/product/messages/ProductReceived"
   createdOffering:
     action: send
     channel:
-      $ref: '#/channels/offering'
+      $ref: "#/channels/offering"
     messages:
-      - $ref: '#/channels/offering/messages/OfferingCreated'
+      - $ref: "#/channels/offering/messages/OfferingCreated"
   updatedOffering:
     action: send
     channel:
-      $ref: '#/channels/offering'
+      $ref: "#/channels/offering"
     messages:
-      - $ref: '#/channels/offering/messages/OfferingUpdated'
+      - $ref: "#/channels/offering/messages/OfferingUpdated"
   deletedOffering:
     action: send
     channel:
-      $ref: '#/channels/offering'
+      $ref: "#/channels/offering"
     messages:
-      - $ref: '#/channels/offering/messages/OfferingDeleted'
+      - $ref: "#/channels/offering/messages/OfferingDeleted"
   
 components:
   messages:
@@ -53,7 +53,7 @@ components:
       contentType: application/json
       payload:
         type: object
-        $ref: '#/components/schemas/Product'
+        $ref: "../common/schemas.yaml#/components/schemas/Offering"
       headers:
         type: object
         properties:
@@ -73,7 +73,7 @@ components:
       contentType: application/json
       payload:
         type: object
-        $ref: '#/components/schemas/Offering'
+        $ref: "../common/schemas.yaml#/components/schemas/Offering"
       headers:
         type: object
         properties:
@@ -94,7 +94,7 @@ components:
       contentType: application/json
       payload:
         type: object
-        $ref: '#/components/schemas/Offering'
+        $ref: "../common/schemas.yaml#/components/schemas/Offering"
       headers:
         type: object
         properties:
@@ -115,7 +115,7 @@ components:
       contentType: application/json
       payload:
         type: object
-        $ref: '#/components/schemas/Offering'
+        $ref: "../common/schemas.yaml#/components/schemas/Offering"
       headers:
         type: object
         properties:
@@ -131,32 +131,3 @@ components:
             description: Type of the event
             type: string
             const: "deleted"
-  schemas:
-    Product:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        color:
-          type: string
-        description:
-          type: string
-        status:
-          type: string
-          enum:
-            - "active"
-            - "retired"
-    Offering:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        productId:
-          type: string
-          format: uuid
-        quantity:
-          type: integer
-        price:
-          type: number
