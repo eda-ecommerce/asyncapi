@@ -33,3 +33,53 @@ components:
           enum:
             - "active"
             - "retired"
+    Payment:
+      type: object
+      properties:
+        PaymentId:
+          type: string
+        OrderId:
+          type: string
+        PaymentDate:
+          type: string
+        CreatedDate:
+          type: string
+        Status:
+          type: integer
+          enum:
+            - "paid"
+            - "unpaid"
+    Order:
+      type: object
+      properties:
+        OrderId:
+          type: string
+        CustomerId:
+          type: string
+        OrderDate:
+          type: string
+        Status:
+          type: string
+          enum:
+            - "inProcess"
+            - "canceld"
+        TotalPrice:
+          type: integer
+        Items:
+          type: object
+          properties:
+            Quantity:
+              type: integer
+            Offering:
+              type: object
+              properties:
+                OfferingId:
+                  type: string
+                ProductId:
+                  type: string
+                Quantity:
+                  type: integer
+                Price:
+                  type: number
+                Status:
+                  type: integer

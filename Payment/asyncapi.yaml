@@ -1,0 +1,142 @@
+asyncapi: 3.0.0
+info:
+  title: Payment Service AsyncAPI for Kafka
+  version: 1.0.0
+servers:
+  development:
+    host: 'localhost:29929'
+    protocol: kafka
+    description: This is the kafka broker.
+channels:
+  order:
+    address: order
+    messages:
+      OrderReceived:
+        $ref: '#/components/messages/OrderReceived'
+        examples: null
+  payment:
+    address: payment
+    messages:
+      PaymentCreated:
+        $ref: '#/components/messages/PaymentCreated'
+      PaymentUpdated:
+        $ref: '#/components/messages/PaymentUpdated'
+operations:
+  OrderReceived:
+    action: receive
+    channel:
+      $ref: '#/channels/order'
+    messages:
+      - $ref: '#/channels/order/messages/OrderReceived'
+  PaymentCreated:
+    action: send
+    channel:
+      $ref: '#/channels/payment'
+    messages:
+      - $ref: '#/channels/payment/messages/PaymentCreated'
+components:
+  messages:
+    OrderReceived:
+      summary: Message representing a order
+      headers:
+        type: object
+        properties:
+          source:
+            type: string
+            const: "order"
+          timestamp:
+            type: integer
+            format: unix
+          operation:
+            type: string
+      payload:
+        type: object
+        $ref: "../common/schemas.yaml#/components/schemas/Order"
+    
+    PaymentCreated:
+      summary: Payment
+      headers:
+        type: object
+        properties:
+          source:
+            type: string
+            const: "payment"
+          timestamp:
+            type: integer
+            format: unix
+          operation:
+            type: string
+            const: "created"
+      payload:
+        type: object
+        $ref: "../common/schemas.yaml#/components/schemas/Payment"
+    PaymentUpdated:
+      summary: Message representing a payment
+      headers:
+        type: object
+        properties:
+          source:
+            type: string
+            const: "payment"
+          timestamp:
+            type: integer
+            format: unix
+          operation:
+            type: string
+            const: "updated"
+      payload:
+        type: object
+        $ref: "../common/schemas.yaml#/components/schemas/Payment"
+  
+#  schemas:
+#    Payment:
+#      type: object
+#      properties:
+#        PaymentId:
+#          type: string
+#        OrderId:
+#          type: string
+#        PaymentDate:
+#          type: string
+#        CreatedDate:
+#          type: string
+#        Status:
+#          type: integer
+#          enum:
+#            - "paid"
+#            - "unpaid"
+#    Order:
+#      type: object
+#      properties:
+#        OrderId:
+#          type: string
+#        CustomerId:
+#          type: string
+#        OrderDate:
+#          type: string
+#        Status:
+#          type: string
+#          enum:
+#            - "inProcess"
+#            - "canceld"
+#        TotalPrice:
+#          type: integer
+#        Items:
+#          type: object
+#          properties:
+#            Quantity:
+#              type: integer
+#            Offering:
+#              type: object
+#              properties:
+#                OfferingId:
+#                  type: string
+#                ProductId:
+#                  type: string
+#                Quantity:
+#                  type: integer
+#                Price:
+#                  type: number
+#                Status:
+#                  type: integer
+              
