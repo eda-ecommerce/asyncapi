@@ -12,17 +12,8 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
 
-      - uses: actions/github-script@v7
-        id: pwd
-        with:
-          script: pwd
-          result-encoding: string
-
-      - uses: actions/github-script@v7
-        id: ls
-        with:
-          script: ls
-          result-encoding: string
+      - name: debug
+        run: pwd; ls
 
       #Using another action for AsyncAPI for validation
       - name: Validating AsyncAPI document
