@@ -16,14 +16,14 @@ jobs:
       - name: Validating AsyncAPI document
         uses: WaleedAshraf/asyncapi-github-action@v0.0.3
         with:
-          filepath: offering/asyncapi.yml
+          filepath: ../offering/asyncapi.yml
 
       #In case you do not want to use defaults, you, for example, want to use a different template
       - name: Generating HTML from my AsyncAPI document
         uses: asyncapi/github-action-for-generator@v0.2.0
         with:
           template: '@asyncapi/html-template' #In case of template from npm, because of @ it must be in quotes
-          filepath: offering/asyncapi.yml
+          filepath: ../offering/asyncapi.yml
           parameters: baseHref=${{github.repository}} sidebarOrganization=byTags #space separated list of key/values
           output: generated-html
 
