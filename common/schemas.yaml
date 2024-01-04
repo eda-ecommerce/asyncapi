@@ -33,6 +33,11 @@ components:
           enum:
             - "active"
             - "retired"
+    ShoppingBasket:
+      type: object
+      properties:
+        ShoppingBasketId:
+          type: string
     Payment:
       type: object
       properties:
@@ -62,7 +67,8 @@ components:
           type: string
           enum:
             - "inProcess"
-            - "canceld"
+            - "cancelled"
+            - "completed"
         TotalPrice:
           type: integer
         Items:

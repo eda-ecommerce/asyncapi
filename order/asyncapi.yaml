@@ -1,0 +1,120 @@
+asyncapi: 3.0.0
+info:
+  title: Order Service AsyncAPI for Kafka
+  version: 1.0.0
+servers:
+  development:
+    host: 'localhost:29929'
+    protocol: kafka
+    description: This is the kafka broker.
+channels:
+  order:
+    address: order
+    messages:
+      OrderCreated:
+        $ref: '#/components/messages/OrderCreated'
+        examples: null
+      OrderUpdated:
+        $ref: '#/components/messages/OrderUpdated'
+        examples: null
+  offering:
+    address: offering
+    messages:
+      OfferingReceived:
+        $ref: '#/components/messages/OfferingReceived'
+  shoppingBasked:
+    address: shoppingBasked
+    messages:
+      ShoppingBaskedReceived:
+        $ref: '#/components/messages/ShoppingBaskedReceived'
+operations:
+  OfferingReceived:
+    action: receive
+    channel:
+      $ref: '#/channels/offering'
+    messages:
+      - $ref: '#/channels/offering/messages/OfferingReceived'
+  ShoppingBaskedReceived:
+    action: receive
+    channel:
+      $ref: '#/channels/shoppingBasked'
+    messages:
+      - $ref: '#/channels/shoppingBasked/messages/ShoppingBaskedReceived'
+  OrderCreated:
+    action: send
+    channel:
+      $ref: '#/channels/order'
+    messages:
+      - $ref: '#/channels/order/messages/OrderCreated'
+  OrderUpdated:
+    action: send
+    channel:
+      $ref: '#/channels/order'
+    messages:
+      - $ref: '#/channels/order/messages/OrderUpdated'
+components:
+  messages:
+    OfferingReceived:
+      headers:
+        type: object
+        properties:
+          source:
+            type: string
+            const: "offering"
+          timestamp:
+            type: integer
+            format: unix
+          operation:
+            type: string
+      payload:
+        type: object
+        $ref: "../common/schemas.yaml#/components/schemas/Offering"
+    ShoppingBaskedReceived:
+      headers:
+        type: object
+        properties:
+          source:
+            type: string
+            const: "shoppingBasket"
+          timestamp:
+            type: integer
+            format: unix
+          operation:
+            type: string
+      payload:
+        type: object
+        $ref: "../common/schemas.yaml#/components/schemas/ShoppingBasket"
+    OrderCreated:
+      summary: Order updated
+      headers:
+        type: object
+        properties:
+          source:
+            type: string
+            const: "order"
+          timestamp:
+            type: integer
+            format: unix
+          operation:
+            type: string
+            const: "created"
+      payload:
+        type: object
+        $ref: "../common/schemas.yaml#/components/schemas/Order"
+    OrderUpdated:
+      summary: Order updated
+      headers:
+        type: object
+        properties:
+          source:
+            type: string
+            const: "order"
+          timestamp:
+            type: integer
+            format: unix
+          operation:
+            type: string
+            const: "updated"
+      payload:
+        type: object
+        $ref: "../common/schemas.yaml#/components/schemas/Order"
