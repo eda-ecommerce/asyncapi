@@ -1,0 +1,28 @@
+name: AsyncAPI documentation publishing
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      #"standard step" where repo needs to be checked-out first
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: debug
+        run: pwd; ls; cd offering; ls
+
+      #In case you do not want to use defaults, you, for example, want to use a different template
+      - name: Generating HTML from my AsyncAPI document
+        uses: docker://asyncapi/github-action-for-generator:2.1.25
+        with:
+          filepath: offering/asyncapi.yaml
+
+      #Using another action that takes generated HTML and pushes it to GH Pages
+      - name: Deploy GH page
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          FOLDER: generated-html
