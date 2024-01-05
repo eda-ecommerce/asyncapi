@@ -21,7 +21,7 @@ jobs:
         with:
           template: '@asyncapi/html-template'
           filepath: offering/asyncapi.yaml
-          output: generated-html
+          output: generated-html/offering
 
       #Using another action that takes generated HTML and pushes it to GH Pages
       - name: Deploy GH page
