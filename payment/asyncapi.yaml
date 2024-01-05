@@ -1,48 +1,26 @@
-asyncapi: 3.0.0
+asyncapi: 2.6.0
 info:
   title: Payment Service AsyncAPI for Kafka
   version: 1.0.0
-servers:
-  development:
-    host: 'localhost:29929'
-    protocol: kafka
-    description: This is the kafka broker.
 channels:
   order:
-    address: order
-    messages:
-      OrderReceived:
-        $ref: '#/components/messages/OrderReceived'
-        examples: null
+    subscribe:
+      message:
+        oneOf:
+          - $ref: '#/components/messages/OrderReceived'
   payment:
-    address: payment
-    messages:
-      PaymentCreated:
-        $ref: '#/components/messages/PaymentCreated'
-      PaymentUpdated:
-        $ref: '#/components/messages/PaymentUpdated'
-operations:
-  OrderReceived:
-    action: receive
-    channel:
-      $ref: '#/channels/order'
-    messages:
-      - $ref: '#/channels/order/messages/OrderReceived'
-  PaymentCreated:
-    action: send
-    channel:
-      $ref: '#/channels/payment'
-    messages:
-      - $ref: '#/channels/payment/messages/PaymentCreated'
-  PaymentUpdated:
-    action: send
-    channel:
-      $ref: '#/channels/payment'
-    messages:
-      - $ref: '#/channels/payment/messages/PaymentUpdated'
+    publish:
+      message:
+        oneOf:
+          - $ref: '#/components/messages/PaymentCreated'
+          - $ref: '#/components/messages/PaymentUpdated'
 components:
   messages:
     OrderReceived:
+      contentType: application/json
+      payload:
+        type: object
+        $ref: "../common/schemas.yaml#/components/schemas/Order"
       headers:
         type: object
         properties:
@@ -54,12 +32,11 @@ components:
             format: unix
           operation:
             type: string
+    PaymentCreated:
+      contentType: application/json
       payload:
         type: object
-        $ref: "../common/schemas.yaml#/components/schemas/Order"
-    
-    PaymentCreated:
-      summary: Payment created
+        $ref: "../common/schemas.yaml#/components/schemas/Payment"
       headers:
         type: object
         properties:
@@ -72,11 +49,11 @@ components:
           operation:
             type: string
             const: "created"
+    PaymentUpdated:
+      contentType: application/json
       payload:
         type: object
         $ref: "../common/schemas.yaml#/components/schemas/Payment"
-    PaymentUpdated:
-      summary: Payment Updated
       headers:
         type: object
         properties:
@@ -89,6 +66,3 @@ components:
           operation:
             type: string
             const: "updated"
-      payload:
-        type: object
-        $ref: "../common/schemas.yaml#/components/schemas/Payment"

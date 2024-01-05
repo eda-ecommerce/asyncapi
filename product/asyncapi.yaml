@@ -1,42 +1,20 @@
-asyncapi: 3.0.0
+asyncapi: 2.6.0
 info:
   title: Product Service
   version: 1.0.0
 defaultContentType: application/json
 channels:
   product:
-    address: 'product'
-    description: The topic on which products may be produced and consumed.
-    messages:
-      ProductCreated:
-        $ref: '#/components/messages/ProductCreated'
-      ProductUpdated:
-        $ref: '#/components/messages/ProductUpdated'
-      ProductDeleted:
-        $ref: '#/components/messages/ProductDeleted'
-operations:
-  createdProduct:
-    action: send
-    channel:
-      $ref: '#/channels/product'
-    messages:
-      - $ref: '#/channels/product/messages/ProductCreated'
-  updatedProduct:
-    action: send
-    channel:
-      $ref: '#/channels/product'
-    messages:
-      - $ref: '#/channels/product/messages/ProductUpdated'
-  deletedProduct:
-    action: send
-    channel:
-      $ref: '#/channels/product'
-    messages:
-      - $ref: '#/channels/product/messages/ProductDeleted'
+    description: The topic on which products may be produced and consumed
+    publish:
+      message:
+        oneOf:
+          - $ref: '#/components/messages/ProductCreated'
+          - $ref: '#/components/messages/ProductUpdated'
+          - $ref: '#/components/messages/ProductDeleted'
 components:
   messages:
     ProductCreated:
-      name: ProductCreated
       contentType: application/json
       payload:
         type: object
@@ -49,15 +27,14 @@ components:
             type: string
             const: "product"
           timestamp:
-            description: UNIX Timestamp 
+            description: UNIX Timestamp
             type: number
             format: unix
-          type:
+          operation:
             description: Type of the event
             type: string
             const: "created"
     ProductUpdated:
-      name: ProductUpdated
       contentType: application/json
       payload:
         type: object
@@ -70,15 +47,14 @@ components:
             type: string
             const: "product"
           timestamp:
-            description: UNIX Timestamp 
+            description: UNIX Timestamp
             type: number
             format: unix
-          type:
+          operation:
             description: Type of the event
             type: string
             const: "updated"
     ProductDeleted:
-      name: ProductDeleted
       contentType: application/json
       payload:
         type: object
@@ -91,10 +67,10 @@ components:
             type: string
             const: "product"
           timestamp:
-            description: UNIX Timestamp 
+            description: UNIX Timestamp
             type: number
             format: unix
-          type:
+          operation:
             description: Type of the event
             type: string
             const: "deleted"
