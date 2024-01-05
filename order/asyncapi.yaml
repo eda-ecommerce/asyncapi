@@ -37,6 +37,10 @@ components:
             format: unix
           operation:
             type: string
+            enum:
+              - "created"
+              - "updated"
+              - "deleted"
     ShoppingBaskedReceived:
       contentType: application/json
       payload:

@@ -31,7 +31,7 @@ components:
           source:
             description: Name of the aggregate which emits the event
             type: string
-            const: "Offering"
+            const: "offering"
           timestamp:
             description: UNIX Timestamp 
             type: number
@@ -39,6 +39,10 @@ components:
           operation:
             description: Type of the event
             type: string
+            enum:
+              - "created"
+              - "updated"
+              - "deleted"
     OfferingCreated:
       contentType: application/json
       payload:
