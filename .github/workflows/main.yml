@@ -20,6 +20,7 @@ jobs:
         uses: docker://asyncapi/github-action-for-generator:2.1.25
         with:
           filepath: offering/asyncapi.yaml
+          output: generated-html
 
       #Using another action that takes generated HTML and pushes it to GH Pages
       - name: Deploy GH page
