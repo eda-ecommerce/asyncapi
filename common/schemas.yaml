@@ -36,8 +36,34 @@ components:
     ShoppingBasket:
       type: object
       properties:
-        ShoppingBasketId:
+        shoppingBasketId:
           type: string
+          format: uuid
+        customerId:
+          type: string
+          format: uuid
+        totalPrice:
+          type: number
+          format: double
+        totalItemQuantity:
+          type: number
+          format: integer
+        items:
+          type: array
+          items:
+            type: object
+            $ref: "#/components/schemas/ShoppingBasketItem"
+    ShoppingBasketItem:
+        type: object
+        properties:
+            offeringId:
+                type: string
+                format: uuid
+            quantity:
+                type: integer
+            totalPrice:
+                type: number
+                format: double
     Payment:
       type: object
       properties:
@@ -89,3 +115,28 @@ components:
                   type: number
                 Status:
                   type: integer
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        email:
+          type: string
+        address:
+          type: object
+          $ref: "#/components/schemas/Address"
+    Address:
+      type: object
+      properties:
+        street:
+          type: string
+          format: Name and Number
+        city:
+          type: string
+        zip:
+          type: string
+        country:
+          type: string
