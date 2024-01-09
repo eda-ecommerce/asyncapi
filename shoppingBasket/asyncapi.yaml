@@ -1,0 +1,129 @@
+asyncapi: 2.6.0
+info:
+  title: Shopping Basket Service
+  version: 1.0.0
+defaultContentType: application/json
+channels:
+  shoppingBasket:
+    description: The topic on which customers may be produced and consumed.
+    subscribe:
+      message:
+        oneOf:
+          - $ref: "#/components/messages/ShoppingBasketCreated"
+          - $ref: "#/components/messages/CustomerAddedItemToBasket"
+          - $ref: "#/components/messages/CustomerRemovedItemFromBasket"
+          - $ref: "#/components/messages/CustomerProceededToCheckout"
+  offering:
+    description: "Offering messages that Shopping Basket Service is interested in."
+    publish:
+      message:
+        oneOf:
+          - $ref: "#/components/messages/OfferingCreated"
+          #TODO convert refs to local refs, copy paste?
+          #- $ref: "../offering/asyncapi.yaml#/components/messages/OfferingUpdated"
+          #- $ref: "../offering/asyncapi.yaml#/components/messages/OfferingDeleted"
+          #- $ref: "../product/asyncapi.yaml#/components/messages/ProductCreated"
+          #- $ref: "../product/asyncapi.yaml#/components/messages/ProductUpdated"
+          #- $ref: "../product/asyncapi.yaml#/components/messages/ProductDeleted"
+components:
+  messages:
+    OfferingCreated:
+      contentType: application/json
+      payload:
+        type: object
+        $ref: "../common/schemas.yaml#/components/schemas/Offering"
+      headers:
+        type: object
+        properties:
+          source:
+            description: Name of the aggregate which emits the event
+            type: string
+            const: "offering"
+          timestamp:
+            description: UNIX Timestamp
+            type: number
+            format: unix
+          operation:
+            description: Type of the event
+            type: string
+            const: "created"
+    ShoppingBasketCreated:
+      contentType: application/json
+      payload:
+        type: object
+        $ref: "../common/schemas.yaml#/components/schemas/ShoppingBasket"
+      headers:
+        type: object
+        properties:
+          source:
+            description: Name of the aggregate which emits the event
+            type: string
+            const: "shoppingBasket"
+          timestamp:
+            description: UNIX Timestamp
+            type: number
+            format: unix
+          operation:
+            description: Type of the event
+            type: string
+            const: created
+    CustomerAddedItemToBasket:
+      contentType: application/json
+      payload:
+        type: object
+        $ref: "../common/schemas.yaml#/components/schemas/ShoppingBasket"
+      headers:
+        type: object
+        properties:
+          source:
+            description: Name of the aggregate which emits the event
+            type: string
+            const: "shoppingBasket"
+          timestamp:
+            description: UNIX Timestamp
+            type: number
+            format: unix
+          operation:
+            description: Type of the event
+            type: string
+            const: addedItem
+    CustomerRemovedItemFromBasket:
+      contentType: application/json
+      payload:
+        type: object
+        $ref: "../common/schemas.yaml#/components/schemas/ShoppingBasket"
+      headers:
+        type: object
+        properties:
+          source:
+            description: Name of the aggregate which emits the event
+            type: string
+            const: "shoppingBasket"
+          timestamp:
+            description: UNIX Timestamp
+            type: number
+            format: unix
+          operation:
+            description: Type of the event
+            type: string
+            const: removedItem
+    CustomerProceededToCheckout:
+      contentType: application/json
+      payload:
+        type: object
+        $ref: "../common/schemas.yaml#/components/schemas/ShoppingBasket"
+      headers:
+        type: object
+        properties:
+          source:
+            description: Name of the aggregate which emits the event
+            type: string
+            const: "shoppingBasket"
+          timestamp:
+            description: UNIX Timestamp
+            type: number
+            format: unix
+          operation:
+            description: Type of the event
+            type: string
+            const: checkout
