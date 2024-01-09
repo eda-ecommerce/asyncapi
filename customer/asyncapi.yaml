@@ -1,0 +1,86 @@
+asyncapi: 2.6.0
+info:
+  title: Customer Service
+  version: 1.0.0
+defaultContentType: application/json
+channels:
+  customer:
+    description: The topic on which customers may be produced and consumed.
+    subscribe:
+      message:
+        oneOf:
+          - $ref: "#/components/messages/CustomerCreated"
+          - $ref: "#/components/messages/CustomerUpdated"
+          - $ref: "#/components/messages/CustomerDeleted"
+components:
+  messages:
+    CustomerCreated:
+      contentType: application/json
+      payload:
+        type: object
+        $ref: "../common/schemas.yaml#/components/schemas/Customer"
+      headers:
+        type: object
+        properties:
+          source:
+            description: Name of the aggregate which emits the event
+            type: string
+            const: "customer"
+          timestamp:
+            description: UNIX Timestamp
+            type: number
+            format: unix
+          operation:
+            description: Type of the event
+            type: string
+            enum:
+              - "created"
+              - "updated"
+              - "deleted"
+    CustomerUpdated:
+      contentType: application/json
+      payload:
+        type: object
+        $ref: "../common/schemas.yaml#/components/schemas/Customer"
+      headers:
+        type: object
+        properties:
+          source:
+            description: Name of the aggregate which emits the event
+            type: string
+            const: "customer"
+          timestamp:
+            description: UNIX Timestamp
+            type: number
+            format: unix
+          operation:
+            description: Type of the event
+            type: string
+            enum:
+              - "created"
+              - "updated"
+              - "deleted"
+    CustomerDeleted:
+      contentType: application/json
+      payload:
+        type: object
+        $ref: "../common/schemas.yaml#/components/schemas/Customer"
+      headers:
+        type: object
+        properties:
+          source:
+            description: Name of the aggregate which emits the event
+            type: string
+            const: "customer"
+          timestamp:
+            description: UNIX Timestamp
+            type: number
+            format: unix
+          operation:
+            description: Type of the event
+            type: string
+            enum:
+              - "created"
+              - "updated"
+              - "deleted"
+            const: "deleted"
