@@ -40,6 +40,20 @@ jobs:
           filepath: payment/asyncapi.yaml
           output: build/payment
 
+      - name: Build Shopping Basket Service AsyncAPI documentation
+        uses: docker://asyncapi/github-action-for-generator:2.1.25
+        with:
+          template: '@asyncapi/html-template'
+          filepath: shoppingBasket/asyncapi.yaml
+          output: build/shopping-basket
+
+      - name: Build Customer Service AsyncAPI documentation
+        uses: docker://asyncapi/github-action-for-generator:2.1.25
+        with:
+          template: '@asyncapi/html-template'
+          filepath: customer/asyncapi.yaml
+          output: build/customer
+
       #Using another action that takes generated HTML and pushes it to GH Pages
       - name: Deploy GH page
         uses: JamesIves/github-pages-deploy-action@v4
