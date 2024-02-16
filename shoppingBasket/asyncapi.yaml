@@ -58,7 +58,7 @@ components:
           source:
             description: Name of the aggregate which emits the event
             type: string
-            const: "shoppingBasket"
+            const: "shopping-basket-service"
           timestamp:
             description: UNIX Timestamp
             type: number
@@ -66,7 +66,7 @@ components:
           operation:
             description: Type of the event
             type: string
-            const: created
+            const: CREATED
     CustomerAddedItemToBasket:
       contentType: application/json
       payload:
@@ -78,7 +78,7 @@ components:
           source:
             description: Name of the aggregate which emits the event
             type: string
-            const: "shoppingBasket"
+            const: "shopping-basket-service"
           timestamp:
             description: UNIX Timestamp
             type: number
@@ -86,7 +86,7 @@ components:
           operation:
             description: Type of the event
             type: string
-            const: addedItem
+            const: CREATED
     CustomerRemovedItemFromBasket:
       contentType: application/json
       payload:
@@ -98,7 +98,7 @@ components:
           source:
             description: Name of the aggregate which emits the event
             type: string
-            const: "shoppingBasket"
+            const: "shopping-basket-service"
           timestamp:
             description: UNIX Timestamp
             type: number
@@ -118,7 +118,7 @@ components:
           source:
             description: Name of the aggregate which emits the event
             type: string
-            const: "shoppingBasket"
+            const: "shopping-basket-service"
           timestamp:
             description: UNIX Timestamp
             type: number

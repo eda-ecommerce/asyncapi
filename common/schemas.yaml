@@ -56,6 +56,9 @@ components:
     ShoppingBasketItem:
         type: object
         properties:
+            shoppingBasketId:
+                type: string
+                format: uuid
             offeringId:
                 type: string
                 format: uuid
@@ -63,7 +66,12 @@ components:
                 type: integer
             totalPrice:
                 type: number
-                format: double
+                format: float
+            itemState:
+                type: string
+                enum:
+                    - "active"
+                    - "removed"
     Payment:
       type: object
       properties:
