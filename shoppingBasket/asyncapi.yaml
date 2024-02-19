@@ -86,7 +86,7 @@ components:
           operation:
             description: Type of the event
             type: string
-            const: CREATED
+            const: UPDATED
     CustomerRemovedItemFromBasket:
       contentType: application/json
       payload:
@@ -106,7 +106,7 @@ components:
           operation:
             description: Type of the event
             type: string
-            const: removedItem
+            const: UPDATED
     CustomerProceededToCheckout:
       contentType: application/json
       payload:
@@ -126,4 +126,4 @@ components:
           operation:
             description: Type of the event
             type: string
-            const: checkout
+            const: CHECKOUT
