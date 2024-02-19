@@ -97,7 +97,7 @@ components:
           type: string
         OrderDate:
           type: string
-        Status:
+        OrderStatus:
           type: string
           enum:
             - "inProcess"
@@ -108,21 +108,19 @@ components:
         Items:
           type: object
           properties:
+            ShoppingBasketId:
+              type: string
             Quantity:
               type: integer
-            Offering:
-              type: object
-              properties:
-                OfferingId:
-                  type: string
-                ProductId:
-                  type: string
-                Quantity:
-                  type: integer
-                Price:
-                  type: number
-                Status:
-                  type: integer
+            OfferingId:
+              type: string
+            TotalPrice:
+              type: number
+            Status:
+              type: string
+              enum:
+                - "active"
+                - "inactive"
     Customer:
       type: object
       properties:
