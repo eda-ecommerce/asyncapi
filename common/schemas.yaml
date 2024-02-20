@@ -70,8 +70,8 @@ components:
             itemState:
                 type: string
                 enum:
-                    - "active"
-                    - "removed"
+                    - "AVAILABLE"
+                    - "UNAVAILABLE"
     Payment:
       type: object
       properties:
