@@ -18,6 +18,11 @@ components:
           type: integer
         price:
           type: number
+        status:
+          type: string
+          enum:
+            - "active"
+            - "retired"
     Product:
       type: object
       properties:
