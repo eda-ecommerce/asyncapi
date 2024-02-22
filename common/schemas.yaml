@@ -108,27 +108,34 @@ components:
         OrderStatus:
           type: string
           enum:
-            - "inProcess"
-            - "cancelled"
-            - "completed"
+            - "InProcess"
+            - "Cancelled"
+            - "Completed"
+            - "Paid"
         TotalPrice:
           type: integer
         Items:
           type: object
           properties:
-            ShoppingBasketId:
-              type: string
-            Quantity:
-              type: integer
-            OfferingId:
-              type: string
-            TotalPrice:
-              type: number
-            Status:
-              type: string
-              enum:
-                - "active"
-                - "inactive"
+            shoppingBasketItemId:
+                type: string
+                format: uuid
+            shoppingBasketId:
+                type: string
+                format: uuid
+            offeringId:
+                type: string
+                format: uuid
+            quantity:
+                type: integer
+            totalPrice:
+                type: number
+                format: float
+            itemState:
+                type: string
+                enum:
+                    - "AVAILABLE"
+                    - "UNAVAILABLE"
     Customer:
       type: object
       properties:

@@ -9,39 +9,14 @@ channels:
         oneOf:
           - $ref: '#/components/messages/OrderCreated'
           - $ref: '#/components/messages/OrderUpdated'
-  offering:
+  shoppingBasket:
     subscribe:
       message:
         oneOf:
-          - $ref: '#/components/messages/OfferingReceived'
-  shoppingBasked:
-    subscribe:
-      message:
-        oneOf:
-          - $ref: '#/components/messages/ShoppingBaskedReceived'
+          - $ref: '#/components/messages/ShoppingBasketReceived'
 components:
   messages:
-    OfferingReceived:
-      contentType: application/json
-      payload:
-        type: object
-        $ref: "../common/schemas.yaml#/components/schemas/Offering"
-      headers:
-        type: object
-        properties:
-          source:
-            type: string
-            const: "offering"
-          timestamp:
-            type: integer
-            format: unix
-          operation:
-            type: string
-            enum:
-              - "created"
-              - "updated"
-              - "deleted"
-    ShoppingBaskedReceived:
+    ShoppingBasketReceived:
       contentType: application/json
       payload:
         type: object
@@ -51,12 +26,13 @@ components:
         properties:
           source:
             type: string
-            const: "shoppingBasket"
+            const: "shopping-basket-service"
           timestamp:
             type: integer
             format: unix
           operation:
             type: string
+            const: "CHECKOUT"
     OrderCreated:
       contentType: application/json
       payload:
