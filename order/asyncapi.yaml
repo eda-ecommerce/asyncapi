@@ -33,6 +33,25 @@ components:
           operation:
             type: string
             const: "CHECKOUT"
+    PaymentReceived:
+      contentType: application/json
+      payload:
+        type: object
+        $ref: "../common/schemas.yaml#/components/schemas/Payment"
+      headers:
+        type: object
+        properties:
+          source:
+            type: string
+            const: "payment"
+          timestamp:
+            type: integer
+            format: unix
+          operation:
+            type: string
+            enum:
+            - "created"
+            - "updated"
     OrderCreated:
       contentType: application/json
       payload:
