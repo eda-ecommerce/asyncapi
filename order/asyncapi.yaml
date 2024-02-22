@@ -14,6 +14,11 @@ channels:
       message:
         oneOf:
           - $ref: '#/components/messages/ShoppingBasketReceived'
+  payment:
+    subscribe:
+      message:
+        oneOf:
+          - $ref: '#/components/messages/PaymentReceived'
 components:
   messages:
     ShoppingBasketReceived:
