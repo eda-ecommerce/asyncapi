@@ -18,20 +18,30 @@ channels:
     publish:
       message:
         oneOf:
-          - $ref: "#/components/messages/OfferingCreated"
-          #TODO convert refs to local refs, copy paste?
-          #- $ref: "../offering/asyncapi.yaml#/components/messages/OfferingUpdated"
-          #- $ref: "../offering/asyncapi.yaml#/components/messages/OfferingDeleted"
-          #- $ref: "../product/asyncapi.yaml#/components/messages/ProductCreated"
-          #- $ref: "../product/asyncapi.yaml#/components/messages/ProductUpdated"
-          #- $ref: "../product/asyncapi.yaml#/components/messages/ProductDeleted"
+          - $ref: "#/components/messages/OfferingCRUD"
 components:
   messages:
-    OfferingCreated:
+    OfferingCRUD:
       contentType: application/json
       payload:
         type: object
-        $ref: "../common/schemas.yaml#/components/schemas/Offering"
+        properties:
+          id:
+            type: string
+            format: uuid
+          status:
+            type: string
+            enum: [
+                "active",
+                "inactive",
+                "retired"
+            ]
+          quantity:
+            type: integer
+          price:
+            type: number
+            format: float
+
       headers:
         type: object
         properties:
@@ -46,7 +56,11 @@ components:
           operation:
             description: Type of the event
             type: string
-            const: "created"
+            enum: [
+              "created",
+              "updated",
+              "deleted"
+            ]
     ShoppingBasketCreated:
       contentType: application/json
       payload:
