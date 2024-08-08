@@ -6,7 +6,7 @@ defaultContentType: application/json
 channels:
   shoppingBasket:
     description: The topic on which customers may be produced and consumed.
-    subscribe:
+    publish:
       message:
         oneOf:
           - $ref: "#/components/messages/ShoppingBasketCreated"
@@ -15,7 +15,7 @@ channels:
           - $ref: "#/components/messages/CustomerProceededToCheckout"
   offering:
     description: "Offering messages that Shopping Basket Service is interested in."
-    publish:
+    subscribe:
       message:
         oneOf:
           - $ref: "#/components/messages/OfferingCRUD"
