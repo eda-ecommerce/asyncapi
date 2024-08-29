@@ -1,0 +1,22 @@
+asyncapi: 2.6.0
+info:
+  title: Shipping Service
+  version: 0.0.1
+defaultContentType: application/json
+#channels:
+#  shipments:
+#    description: "Everything about shipments"
+#    publish:
+#      message:
+#        oneOf:
+#          - $ref: "#/components/messages/shipmentCreated"
+#  stock:
+#    description: "Stock updates"
+#    publish:
+#      message:
+#        oneOf:
+#          - $ref: "#/components/messages/stockIncreased"
+components:
+  schemas:
+    Shipment:
+      type: object
