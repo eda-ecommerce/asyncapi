@@ -99,43 +99,61 @@ components:
     Order:
       type: object
       properties:
-        OrderId:
+        orderId:
           type: string
-        CustomerId:
+        customerId:
           type: string
-        OrderDate:
+        orderDate:
           type: string
-        OrderStatus:
+        orderStatus:
           type: string
           enum:
             - "InProcess"
             - "Cancelled"
             - "Completed"
             - "Paid"
-        TotalPrice:
+        totalPrice:
           type: integer
-        Items:
-          type: object
-          properties:
-            shoppingBasketItemId:
-                type: string
-                format: uuid
-            shoppingBasketId:
-                type: string
-                format: uuid
-            offeringId:
-                type: string
-                format: uuid
-            quantity:
-                type: integer
-            totalPrice:
-                type: number
-                format: float
-            itemState:
-                type: string
-                enum:
-                    - "AVAILABLE"
-                    - "UNAVAILABLE"
+        items:
+          type: array
+          items:
+            type: object
+            $ref: "#/components/schemas/OrderLineItem"
+        products:
+          type: array
+          items:
+            type: object
+            $ref: "#/components/schemas/ProductQuantity"
+    OrderLineItem:
+      type: object
+      properties:
+        shoppingBasketItemId:
+          type: string
+          format: uuid
+        shoppingBasketId:
+          type: string
+          format: uuid
+        offeringId:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+        totalPrice:
+          type: number
+          format: float
+        itemState:
+          type: string
+          enum:
+            - "AVAILABLE"
+            - "UNAVAILABLE"
+    ProductQuantity:
+      type: object
+      properties:
+        productId:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
     Customer:
       type: object
       properties:
