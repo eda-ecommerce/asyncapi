@@ -1,24 +1,29 @@
 asyncapi: 2.6.0
 info:
   title: Order Service AsyncAPI for Kafka
-  version: 1.0.0
+  version: 2.0.0
 channels:
   order:
     publish:
       message:
         oneOf:
-          - $ref: '#/components/messages/OrderCreated'
-          - $ref: '#/components/messages/OrderUpdated'
+          - $ref: '#/components/messages/OrderRequested'
+          - $ref: '#/components/messages/OrderConfirmed'
+          - $ref: '#/components/messages/OrderFulfilled'
+          - $ref: '#/components/messages/OrderCancelled'
   shoppingBasket:
     subscribe:
       message:
         oneOf:
           - $ref: '#/components/messages/ShoppingBasketReceived'
-  payment:
+  shipping:
     subscribe:
       message:
         oneOf:
-          - $ref: '#/components/messages/PaymentReceived'
+          - $ref: '#/components/messages/ShippmentDelivered'
+          - $ref: '#/components/messages/StockReserved'
+          - $ref: '#/components/messages/StockDecreased'
+          - $ref: '#/components/messages/StockIncreased'
 components:
   messages:
     ShoppingBasketReceived:
@@ -38,26 +43,7 @@ components:
           operation:
             type: string
             const: "CHECKOUT"
-    PaymentReceived:
-      contentType: application/json
-      payload:
-        type: object
-        $ref: "../common/schemas.yaml#/components/schemas/Payment"
-      headers:
-        type: object
-        properties:
-          source:
-            type: string
-            const: "payment"
-          timestamp:
-            type: integer
-            format: unix
-          operation:
-            type: string
-            enum:
-            - "created"
-            - "updated"
-    OrderCreated:
+    OrderRequested:
       contentType: application/json
       payload:
         type: object
@@ -73,8 +59,8 @@ components:
             format: unix
           operation:
             type: string
-            const: "created"
-    OrderUpdated:
+            const: "requested"
+    OrderConfirmed:
       contentType: application/json
       payload:
         type: object
@@ -90,4 +76,38 @@ components:
             format: unix
           operation:
             type: string
-            const: "updated"
+            const: "confirmed"
+    OrderFulfilled:
+      contentType: application/json
+      payload:
+        type: object
+        $ref: "../common/schemas.yaml#/components/schemas/Order"
+      headers:
+        type: object
+        properties:
+          source:
+            type: string
+            const: "order"
+          timestamp:
+            type: integer
+            format: unix
+          operation:
+            type: string
+            const: "fulfilled"
+    OrderCancelled:
+      contentType: application/json
+      payload:
+        type: object
+        $ref: "../common/schemas.yaml#/components/schemas/Order"
+      headers:
+        type: object
+        properties:
+          source:
+            type: string
+            const: "order"
+          timestamp:
+            type: integer
+            format: unix
+          operation:
+            type: string
+            const: "cancelled"
