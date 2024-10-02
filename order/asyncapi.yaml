@@ -16,14 +16,14 @@ channels:
       message:
         oneOf:
           - $ref: '#/components/messages/ShoppingBasketReceived'
-  shipping:
-    subscribe:
-      message:
-        oneOf:
-          - $ref: '#/components/messages/ShippmentDelivered'
-          - $ref: '#/components/messages/StockReserved'
-          - $ref: '#/components/messages/StockDecreased'
-          - $ref: '#/components/messages/StockIncreased'
+#  shipping:
+#    subscribe:
+#      message:
+#        oneOf:
+#          - $ref: '#/components/messages/ShippmentDelivered'
+#          - $ref: '#/components/messages/StockReserved'
+#          - $ref: '#/components/messages/StockDecreased'
+#          - $ref: '#/components/messages/StockIncreased'
 components:
   messages:
     ShoppingBasketReceived:
