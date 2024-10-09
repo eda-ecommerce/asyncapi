@@ -54,6 +54,13 @@ jobs:
           filepath: customer/asyncapi.yaml
           output: build/customer
 
+      - name: Build Shipping Service AsyncAPI documentation
+        uses: docker://asyncapi/github-action-for-generator:2.1.25
+        with:
+          template: '@asyncapi/html-template'
+          filepath: shipping/asyncapi.yaml
+          output: build/shipping
+
       #Using another action that takes generated HTML and pushes it to GH Pages
       - name: Deploy GH page
         uses: JamesIves/github-pages-deploy-action@v4
