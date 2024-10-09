@@ -1,22 +1,170 @@
 asyncapi: 2.6.0
 info:
   title: Shipping Service
-  version: 0.0.1
+  version: 0.1.0
 defaultContentType: application/json
-#channels:
+channels:
 #  shipments:
 #    description: "Everything about shipments"
 #    publish:
 #      message:
 #        oneOf:
-#          - $ref: "#/components/messages/shipmentCreated"
-#  stock:
-#    description: "Stock updates"
-#    publish:
-#      message:
-#        oneOf:
-#          - $ref: "#/components/messages/stockIncreased"
+#          - $ref: "#/components/messages/ShipmentCreated"
+  stock:
+    description: "Stock updates"
+    publish:
+      message:
+        oneOf:
+          - $ref: "#/components/messages/StockIncreased"
+          - $ref: "#/components/messages/StockDecreased"
+          - $ref: "#/components/messages/StockReserved"
+          - $ref: "#/components/messages/StockUnreserved"
+  order:
+    description: "Order messages relevant to the Shipping service"
+    subscribe:
+      message:
+        oneOf:
+          - $ref: "#/components/messages/OrderConfirmed"
 components:
-  schemas:
-    Shipment:
-      type: object
+  messages:
+    OrderConfirmed:
+      contentType: application/json
+      payload:
+        type: object
+        $ref: "../common/schemas.yaml#/components/schemas/Order"
+      headers:
+        type: object
+        properties:
+          source:
+            type: string
+            const: "order"
+          timestamp:
+            type: integer
+            format: unix
+          operation:
+            type: string
+            const: "confirmed"
+    StockIncreased:
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          productId:
+            type: string
+            format: uuid
+          newStock:
+            type: number
+      headers:
+        type: object
+        properties:
+          eventKey:
+            type: string
+            const: uuid
+          timestamp:
+            type: number
+            format: unix
+          messageId:
+            type: string
+            format: uuid
+    StockDecreased:
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          productId:
+              type: string
+              format: uuid
+          newStock:
+              type: number
+      headers:
+        type: object
+        properties:
+          eventKey:
+            type: string
+            const: uuid
+          timestamp:
+            type: number
+            format: unix
+          messageId:
+            type: string
+            format: uuid
+    StockReserved:
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          productId:
+              type: string
+              format: uuid
+          newStock:
+              type: number
+          reservedStock:
+              type: number
+      headers:
+        type: object
+        properties:
+          eventKey:
+            type: string
+            const: uuid
+          timestamp:
+            type: number
+            format: unix
+          messageId:
+            type: string
+            format: uuid
+    StockUnreserved:
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          productId:
+              type: string
+              format: uuid
+          newStock:
+              type: number
+          reservedStock:
+              type: number
+      headers:
+        type: object
+        properties:
+          eventKey:
+              type: string
+              const: uuid
+          timestamp:
+              type: number
+              format: unix
+          messageId:
+              type: string
+              format: uuid
+    PackageDelivered:
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          packageId:
+            type: string
+            format: uuid
+          shipmentId:
+            type: string
+            format: uuid
+          orderId:
+            type: string
+            format: uuid
+          dest:
+            type: object
+            $ref: "../common/schemas.yaml#/components/schemas/ShipmentAddress"
+          origin:
+            type: object
+            $ref: "../common/schemas.yaml#/components/schemas/ShipmentAddress"
+      headers:
+        type: object
+        properties:
+          eventKey:
+            type: string
+            const: uuid
+          timestamp:
+            type: number
+            format: unix
+          messageId:
+            type: string
+            format: uuid
