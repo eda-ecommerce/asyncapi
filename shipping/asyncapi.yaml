@@ -4,12 +4,12 @@ info:
   version: 0.1.0
 defaultContentType: application/json
 channels:
-#  shipments:
-#    description: "Everything about shipments"
-#    publish:
-#      message:
-#        oneOf:
-#          - $ref: "#/components/messages/ShipmentCreated"
+  shipments:
+    description: "Everything about shipments"
+    publish:
+      message:
+        oneOf:
+          - $ref: "#/components/messages/ShipmentDelivered"
   stock:
     description: "Stock updates"
     publish:
@@ -57,15 +57,15 @@ components:
       headers:
         type: object
         properties:
-          eventKey:
+          source:
             type: string
-            const: uuid
+            const: "shipping"
           timestamp:
-            type: number
+            type: integer
             format: unix
-          messageId:
+          operation:
             type: string
-            format: uuid
+            const: "stock-increased"
     StockDecreased:
       contentType: application/json
       payload:
@@ -79,15 +79,15 @@ components:
       headers:
         type: object
         properties:
-          eventKey:
+          source:
             type: string
-            const: uuid
+            const: "shipping"
           timestamp:
-            type: number
+            type: integer
             format: unix
-          messageId:
+          operation:
             type: string
-            format: uuid
+            const: "stock-decreased"
     StockReserved:
       contentType: application/json
       payload:
@@ -103,15 +103,15 @@ components:
       headers:
         type: object
         properties:
-          eventKey:
+          source:
             type: string
-            const: uuid
+            const: "shipping"
           timestamp:
-            type: number
+            type: integer
             format: unix
-          messageId:
+          operation:
             type: string
-            format: uuid
+            const: "stock-reserved"
     StockUnreserved:
       contentType: application/json
       payload:
@@ -127,23 +127,20 @@ components:
       headers:
         type: object
         properties:
-          eventKey:
-              type: string
-              const: uuid
+          source:
+            type: string
+            const: "shipping"
           timestamp:
-              type: number
-              format: unix
-          messageId:
-              type: string
-              format: uuid
-    PackageDelivered:
+            type: integer
+            format: unix
+          operation:
+            type: string
+            const: "stock-unreserved"
+    ShipmentDelivered:
       contentType: application/json
       payload:
         type: object
         properties:
-          packageId:
-            type: string
-            format: uuid
           shipmentId:
             type: string
             format: uuid
@@ -159,12 +156,12 @@ components:
       headers:
         type: object
         properties:
-          eventKey:
+          source:
             type: string
-            const: uuid
+            const: "shipping"
           timestamp:
-            type: number
+            type: integer
             format: unix
-          messageId:
+          operation:
             type: string
-            format: uuid
+            const: "delivered"
