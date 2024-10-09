@@ -181,3 +181,104 @@ components:
           type: string
         postCode:
           type: string
+    ShipmentAddress:
+      type: object
+      properties:
+        street:
+            type: string
+            format: Name and Number
+        city:
+            type: string
+            format: Name
+        state:
+            type: string
+            format: Name
+        postalCode:
+            type: string
+            format: Number
+        country:
+            type: string
+            format: Name
+    ShipmentOrderLineItem:
+      type: object
+      properties:
+        productId:
+            type: string
+            format: uuid
+        quantity:
+            type: integer
+    APackage:
+      type: object
+      properties:
+        id:
+            type: string
+            format: uuid
+        trackingNumber:
+            type: string
+            format: uuid
+        height:
+            type: number
+            format: float
+        width:
+            type: number
+            format: float
+        depth:
+            type: number
+            format: float
+        weight:
+            type: number
+            format: float
+        orderLineItems:
+            type: array
+            items:
+                type: object
+                $ref: "#/components/schemas/ShipmentOrderLineItem"
+    ShipmentProduct:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        stock:
+          type: number
+        retired:
+          type: boolean
+        storageLocation:
+          type: string
+        weight:
+          type: number
+          format: float
+        reservedStock:
+          type: number
+    Shipment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        destination:
+            type: object
+            $ref: "#/components/schemas/ShipmentAddress"
+        origin:
+            type: object
+            $ref: "#/components/schemas/ShipmentAddress"
+        orderId:
+            type: string
+            format: uuid
+        aPackage:
+            type: object
+            $ref: "#/components/schemas/APackage"
+        requestedProducts:
+            type: array
+            items:
+                type: object
+                $ref: "#/components/schemas/ShipmentOrderLineItem"
+        status:
+            type: string
+            enum:
+                - "REQUESTED"
+                - "PACKAGED"
+                - "SHIPPED"
+                - "IN_DELIVERY"
+                - "DELIVERED"
+                - "RETURNED"
