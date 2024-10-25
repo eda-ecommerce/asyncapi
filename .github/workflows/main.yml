@@ -12,17 +12,13 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Generator, Validator, Converter and others - all in one for your AsyncAPI docs
+      - name: GenerateShipment
         uses: asyncapi/github-action-for-cli@v3.1.2
         with:
-          command: custom
-          custom_command: bundle common/schemas.yaml offering/asyncapi.yaml > offering/final.yaml
-
-      - name: Generator, Validator, Converter and others - all in one for your AsyncAPI docs
-        uses: asyncapi/github-action-for-cli@v3.1.2
-        with:
-          command: custom
-          custom_command: generate fromTemplate offering/final.yaml @asyncapi/html-template -o ./offering/
+          command: generate
+          filepath: 'shipping/asyncapi.yml'
+          output: 'build/shipping'
+          template: '@asyncapi/html-template'
 
       - name: Build Offer Service AsyncAPI documentation
         uses: docker://asyncapi/github-action-for-generator:2.1.25
@@ -77,4 +73,4 @@ jobs:
       - name: Deploy GH page
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          FOLDER: build
+          folder: build
