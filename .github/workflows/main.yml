@@ -16,9 +16,13 @@ jobs:
         uses: asyncapi/github-action-for-cli@v3.1.2
         with:
           command: custom
-          custom_command:
-            - bundle common/schemas.yaml offering/asyncapi.yaml > offering/final.yaml
-            - generate fromTemplate offering/final.yaml @asyncapi/html-template -o ./offering/
+          custom_command: bundle common/schemas.yaml offering/asyncapi.yaml > offering/final.yaml
+
+      - name: Generator, Validator, Converter and others - all in one for your AsyncAPI docs
+        uses: asyncapi/github-action-for-cli@v3.1.2
+        with:
+          command: custom
+          custom_command: generate fromTemplate offering/final.yaml @asyncapi/html-template -o ./offering/
 
       - name: Build Offer Service AsyncAPI documentation
         uses: docker://asyncapi/github-action-for-generator:2.1.25
