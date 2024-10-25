@@ -28,7 +28,9 @@ channels:
     subscribe:
       message:
         oneOf:
-          - $ref: "#/components/messages/OrderConfirmed"
+          - $ref: "../order/asyncapi.yaml#/components/messages/OrderConfirmed"
+          - $ref: "../order/asyncapi.yaml#/components/messages/OrderRequested"
+          - $ref: "../order/asyncapi.yaml#/components/messages/OrderFulfilled"
 components:
   schemas:
     ShipmentLineItem:
@@ -79,6 +81,23 @@ components:
               type: number
               format: float
   messages:
+    OrderRequested:
+      contentType: application/json
+      payload:
+        type: object
+        $ref: "../common/schemas.yaml#/components/schemas/Order"
+      headers:
+        type: object
+        properties:
+          source:
+            type: string
+            const: "order"
+          timestamp:
+            type: integer
+            format: unix
+          operation:
+            type: string
+            const: "requested"
     OrderConfirmed:
       contentType: application/json
       payload:
