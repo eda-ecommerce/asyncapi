@@ -15,10 +15,7 @@ channels:
     publish:
       message:
         oneOf:
-          - $ref: "#/components/messages/StockIncreased"
-          - $ref: "#/components/messages/StockDecreased"
           - $ref: "#/components/messages/AvailableStockAdjusted"
-          - $ref: "#/components/messages/StockUnreserved"
   order:
     description: "Order messages relevant to the Shipping service"
     subscribe:
@@ -44,50 +41,6 @@ components:
           operation:
             type: string
             const: "confirmed"
-    StockIncreased:
-      contentType: application/json
-      payload:
-        type: object
-        properties:
-          productId:
-            type: string
-            format: uuid
-          newStock:
-            type: number
-      headers:
-        type: object
-        properties:
-          source:
-            type: string
-            const: "shipping"
-          timestamp:
-            type: integer
-            format: unix
-          operation:
-            type: string
-            const: "stock-increased"
-    StockDecreased:
-      contentType: application/json
-      payload:
-        type: object
-        properties:
-          productId:
-              type: string
-              format: uuid
-          newStock:
-              type: number
-      headers:
-        type: object
-        properties:
-          source:
-            type: string
-            const: "shipping"
-          timestamp:
-            type: integer
-            format: unix
-          operation:
-            type: string
-            const: "stock-decreased"
     AvailableStockAdjusted:
       contentType: application/json
       payload:
@@ -114,30 +67,6 @@ components:
           operation:
             type: string
             const: "stock-reserved"
-    StockUnreserved:
-      contentType: application/json
-      payload:
-        type: object
-        properties:
-          productId:
-              type: string
-              format: uuid
-          newStock:
-              type: number
-          reservedStock:
-              type: number
-      headers:
-        type: object
-        properties:
-          source:
-            type: string
-            const: "shipping"
-          timestamp:
-            type: integer
-            format: unix
-          operation:
-            type: string
-            const: "stock-unreserved"
     ShipmentDelivered:
       contentType: application/json
       payload:
