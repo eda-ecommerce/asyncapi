@@ -16,7 +16,7 @@ jobs:
         uses: asyncapi/github-action-for-cli@v3.1.2
         with:
           command: custom
-          custom_command: 'asyncapi generate fromTemplate ./shipping/asyncapi.yaml @asyncapi/html-template -o ./build/shipping --use-new-generator --force-write'
+          custom_command: 'generate fromTemplate ./shipping/asyncapi.yaml @asyncapi/html-template -o ./build/shipping --use-new-generator --force-write'
           template: '@asyncapi/html-template'
 
       - name: Build Offer Service AsyncAPI documentation
