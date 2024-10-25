@@ -12,24 +12,29 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: GenerateOffering
+        uses: asyncapi/github-action-for-cli@v3.1.2
+        with:
+          command: generate
+          parameters: '--use-new-generator --force-write'
+          filepath: 'offering/asyncapi.yml'
+          cli_version: '2.7.4'
+          template: '@asyncapi/html-template'
+          output: 'build/offering'
+
       - name: GenerateShipment
         uses: asyncapi/github-action-for-cli@v3.1.2
         with:
-          command: custom
+          command: generate
+          parameters: '--use-new-generator --force-write'
+          filepath: 'shipping/asyncapi.yml'
           cli_version: '2.7.4'
-          custom_command: 'generate fromTemplate ./shipping/asyncapi.yaml @asyncapi/html-template -o ./build/shipping --use-new-generator --force-write'
           template: '@asyncapi/html-template'
+          output: 'build/shipping'
       - name: Deploy GH page
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: build
-
-      - name: Build Offer Service AsyncAPI documentation
-        uses: docker://asyncapi/github-action-for-generator:2.1.25
-        with:
-          template: '@asyncapi/html-template'
-          filepath: offering/asyncapi.yaml
-          output: build/offering
 
       - name: Build Product Service AsyncAPI documentation
         uses: docker://asyncapi/github-action-for-generator:2.1.25
