@@ -31,6 +31,57 @@ jobs:
           cli_version: '2.7.4'
           template: '@asyncapi/html-template'
           output: 'build/shipping'
+
+      - name: GenerateCustomer
+        uses: asyncapi/github-action-for-cli@v3.1.2
+        with:
+          command: generate
+          parameters: '--use-new-generator --force-write'
+          filepath: 'customer/asyncapi.yaml'
+          cli_version: '2.7.4'
+          template: '@asyncapi/html-template'
+          output: 'build/customer'
+
+      - name: GenerateOrder
+        uses: asyncapi/github-action-for-cli@v3.1.2
+        with:
+          command: generate
+          parameters: '--use-new-generator --force-write'
+          filepath: 'order/asyncapi.yaml'
+          cli_version: '2.7.4'
+          template: '@asyncapi/html-template'
+          output: 'build/order'
+
+      - name: GeneratePayment
+        uses: asyncapi/github-action-for-cli@v3.1.2
+        with:
+          command: generate
+          parameters: '--use-new-generator --force-write'
+          filepath: 'payment/asyncapi.yaml'
+          cli_version: '2.7.4'
+          template: '@asyncapi/html-template'
+          output: 'build/payment'
+
+      - name: GenerateProduct
+        uses: asyncapi/github-action-for-cli@v3.1.2
+        with:
+          command: generate
+          parameters: '--use-new-generator --force-write'
+          filepath: 'product/asyncapi.yaml'
+          cli_version: '2.7.4'
+          template: '@asyncapi/html-template'
+          output: 'build/product'
+
+      - name: GenerateShoppingBasket
+        uses: asyncapi/github-action-for-cli@v3.1.2
+        with:
+          command: generate
+          parameters: '--use-new-generator --force-write'
+          filepath: 'shoppingBasket/asyncapi.yaml'
+          cli_version: '2.7.4'
+          template: '@asyncapi/html-template'
+          output: 'build/shoppingBasket'
+
       - name: Deploy GH page
         uses: JamesIves/github-pages-deploy-action@v4
         with:
