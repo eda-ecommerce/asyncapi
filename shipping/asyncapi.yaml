@@ -28,9 +28,9 @@ channels:
     subscribe:
       message:
         oneOf:
-          - $ref: "../order/asyncapi.yaml#/components/messages/OrderConfirmed"
-          - $ref: "../order/asyncapi.yaml#/components/messages/OrderRequested"
-          - $ref: "../order/asyncapi.yaml#/components/messages/OrderFulfilled"
+          - $ref: "#/components/messages/OrderRequested"
+          #- $ref: "../order/asyncapi.yaml#/components/messages/OrderRequested"
+          #- $ref: "../order/asyncapi.yaml#/components/messages/OrderFulfilled"
 components:
   schemas:
     ShipmentLineItem:
