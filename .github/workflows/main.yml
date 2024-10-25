@@ -16,6 +16,7 @@ jobs:
         uses: asyncapi/github-action-for-cli@v3.1.2
         with:
           command: custom
+          cli_version: '2.7.4'
           custom_command: 'generate fromTemplate ./shipping/asyncapi.yaml @asyncapi/html-template -o ./build/shipping --use-new-generator --force-write'
           template: '@asyncapi/html-template'
 
