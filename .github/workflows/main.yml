@@ -15,6 +15,7 @@ jobs:
       - name: Generator, Validator, Converter and others - all in one for your AsyncAPI docs
         uses: asyncapi/github-action-for-cli@v3.1.2
         with:
+          command: custom
           custom_command:
             - bundle common/schemas.yaml offering/asyncapi.yaml > offering/final.yaml
             - generate fromTemplate offering/final.yaml @asyncapi/html-template -o ./offering/
