@@ -16,8 +16,8 @@ jobs:
         uses: asyncapi/github-action-for-cli@v3.1.2
         with:
           command: generate
-          filepath: 'shipping/asyncapi.yml'
-          output: 'build/shipping'
+          filepath: shipping/asyncapi.yaml
+          output: build/shipping
           template: '@asyncapi/html-template'
 
       - name: Build Offer Service AsyncAPI documentation
