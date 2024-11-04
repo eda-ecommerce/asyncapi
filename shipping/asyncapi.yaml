@@ -22,6 +22,7 @@ channels:
       message:
         oneOf:
           - $ref: "#/components/messages/AvailableStockAdjusted"
+          #TODO: - $ref: "#/components/messages/StockCritical"
 
   order:
     description: "Order messages relevant to the Shipping service"
@@ -43,9 +44,6 @@ components:
     CommonFields:
       type: object
       properties:
-        shipmentId:
-          type: string
-          format: uuid
         orderId:
           type: string
           format: uuid
