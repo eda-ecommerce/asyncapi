@@ -1,0 +1,75 @@
+asyncapi: 2.6.0
+info:
+  title: Shipping Service AsyncAPI for Kafka
+  version: 1.0.0
+components:
+  schemas:
+    ShipmentLineItem:
+      type: object
+      properties:
+        productId:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+    CommonFields:
+      type: object
+      properties:
+        orderId:
+          type: string
+          format: uuid
+        destination:
+          type: object
+          $ref: "schemas.yaml#/components/schemas/ShipmentAddress"
+        origin:
+          type: object
+          $ref: "schemas.yaml#/components/schemas/ShipmentAddress"
+    PackageMetadata:
+      type: object
+      properties:
+        packageId:
+          type: string
+          format: uuid
+        weight:
+          type: number
+          format: float
+        dimensions:
+          type: object
+          properties:
+            width:
+              type: number
+              format: float
+            height:
+              type: number
+              format: float
+            depth:
+              type: number
+              format: float
+            volume:
+              type: number
+              format: float
+    FullPackage:
+      type: object
+      properties:
+        package:
+          allOf:
+            - $ref: "#/components/schemas/PackageMetadata"
+            - type: object
+              properties:
+                trackingNumber:
+                  type: string
+                  format: uuid
+                contents:
+                  type: array
+                  $ref: "#/components/schemas/ShipmentLineItem"
+    BoxedPackage:
+      type: object
+      properties:
+        package:
+          allOf:
+            - $ref: "#/components/schemas/PackageMetadata"
+            - type: object
+              properties:
+                contents:
+                  type: array
+                  $ref: "#/components/schemas/ShipmentLineItem"

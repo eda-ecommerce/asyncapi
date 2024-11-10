@@ -9,289 +9,42 @@ channels:
     publish:
       message:
         oneOf:
-          - $ref: "#/components/messages/ShipmentDelivered"
-          - $ref: "#/components/messages/ShipmentRequested"
-          - $ref: "#/components/messages/ShipmentBoxed"
-          - $ref: "#/components/messages/ShipmentImpossible"
-          - $ref: "#/components/messages/ShipmentCancelled"
-          - $ref: "#/components/messages/ShipmentSent"
-          - $ref: "#/components/messages/ShipmentDelivered"
+          - $ref: "../common/shippingMessages.yaml#/components/messages/ShipmentDelivered"
+            name: ShipmentDelivered
+            title: ShipmentDelivered
+          - $ref: "../common/shippingMessages.yaml#/components/messages/ShipmentRequested"
+            name: ShipmentRequested
+            title: ShipmentRequested
+          - $ref: "../common/shippingMessages.yaml#/components/messages/ShipmentBoxed"
+            name: ShipmentBoxed
+            title: ShipmentBoxed
+          - $ref: "../common/shippingMessages.yaml#/components/messages/ShipmentImpossible"
+            name: ShipmentImpossible
+            title: ShipmentImpossible
+          - $ref: "../common/shippingMessages.yaml#/components/messages/ShipmentCancelled"
+            name: ShipmentCancelled
+            title: ShipmentCancelled
+          - $ref: "../common/shippingMessages.yaml#/components/messages/ShipmentSent"
+            name: ShipmentSent
+            title: ShipmentSent
+
   stock:
     description: "Stock updates"
     publish:
       message:
         oneOf:
-          - $ref: "#/components/messages/AvailableStockAdjusted"
-          #TODO: - $ref: "#/components/messages/StockCritical"
+          - $ref: "../common/shippingMessages.yaml#/components/messages/AvailableStockAdjusted"
+            name: AvailableStockAdjusted
+            title: AvailableStockAdjusted
 
   order:
     description: "Order messages relevant to the Shipping service"
     subscribe:
       message:
         oneOf:
-          - $ref: "#/components/messages/OrderRequested"
-          - $ref: "#/components/messages/OrderConfirmed"
-components:
-  schemas:
-    ShipmentLineItem:
-      type: object
-      properties:
-        productId:
-          type: string
-          format: uuid
-        quantity:
-          type: integer
-    CommonFields:
-      type: object
-      properties:
-        orderId:
-          type: string
-          format: uuid
-        destination:
-          type: object
-          $ref: "../common/schemas.yaml#/components/schemas/ShipmentAddress"
-        origin:
-          type: object
-          $ref: "../common/schemas.yaml#/components/schemas/ShipmentAddress"
-    Package:
-      type: object
-      properties:
-        packageId:
-          type: string
-          format: uuid
-        weight:
-          type: number
-          format: float
-        dimensions:
-          type: object
-          properties:
-            width:
-              type: number
-              format: float
-            height:
-              type: number
-              format: float
-            depth:
-              type: number
-              format: float
-            volume:
-              type: number
-              format: float
-  messages:
-    OrderRequested:
-      contentType: application/json
-      payload:
-        type: object
-        $ref: "../common/schemas.yaml#/components/schemas/Order"
-      headers:
-        type: object
-        properties:
-          messageId:
-            type: string
-            format: uuid
-          operation:
-            type: string
-            const: "OrderRequested"
-    OrderConfirmed:
-      contentType: application/json
-      payload:
-        type: object
-        $ref: "../common/schemas.yaml#/components/schemas/Order"
-      headers:
-        type: object
-        properties:
-          messageId:
-            type: string
-            format: uuid
-          operation:
-            type: string
-            const: "OrderConfirmed"
-    AvailableStockAdjusted:
-      contentType: application/json
-      payload:
-        type: object
-        properties:
-          productId:
-            type: string
-            format: uuid
-          actualStock:
-            type: number
-          reservedStock:
-            type: number
-          availableStock:
-            type: number
-      headers:
-        type: object
-        properties:
-          source:
-            type: string
-            const: "shipping"
-          timestamp:
-            type: integer
-            format: unix
-          operation:
-            type: string
-            const: "stock-reserved"
-    ShipmentRequested:
-      contentType: application/json
-      payload:
-        allOf:
-          - $ref: "#/components/schemas/CommonFields"
-          - type: object
-            properties:
-              status:
-                type: string
-                enum: [ "requested" ]
-              orderedItems:
-                type: array
-                $ref: "#/components/schemas/ShipmentLineItem"
-      headers:
-        type: object
-        properties:
-          messageId:
-            type: string
-            format: uuid
-          operation:
-            type: string
-            const: "ShipmentRequested"
-    ShipmentDelivered:
-      contentType: application/json
-      payload:
-        allOf:
-          - $ref: "#/components/schemas/CommonFields"
-          - type: object
-            properties:
-              status:
-                type: string
-                enum: [ "delivered" ]
-              orderedItems:
-                type: array
-                $ref: "#/components/schemas/ShipmentLineItem"
-              package:
-                allOf:
-                  - $ref: "#/components/schemas/Package"
-                  - type: object
-                    properties:
-                      trackingNumber:
-                        type: string
-                        format: uuid
-      headers:
-        type: object
-        properties:
-          messageId:
-            type: string
-            format: uuid
-          operation:
-            type: string
-            const: "ShipmentDelivered"
-    ShipmentBoxed:
-      contentType: application/json
-      payload:
-        allOf:
-          - $ref: "#/components/schemas/CommonFields"
-          - type: object
-            properties:
-              status:
-                type: string
-                enum: [ "boxed" ]
-              orderedItems:
-                type: array
-                $ref: "#/components/schemas/ShipmentLineItem"
-              package:
-                $ref: "#/components/schemas/Package"
-      headers:
-        type: object
-        properties:
-          messageId:
-            type: string
-            format: uuid
-          operation:
-            type: string
-            const: "ShipmentBoxed"
-    ShipmentSent:
-      contentType: application/json
-      payload:
-        allOf:
-          - $ref: "#/components/schemas/CommonFields"
-          - type: object
-            properties:
-              status:
-                type: string
-                enum: [ "sent" ]
-              orderedItems:
-                type: array
-                $ref: "#/components/schemas/ShipmentLineItem"
-              package:
-                allOf:
-                  - $ref: "#/components/schemas/Package"
-                  - type: object
-                    properties:
-                      trackingNumber:
-                        type: string
-                        format: uuid
-      headers:
-        type: object
-        properties:
-          messageId:
-            type: string
-            format: uuid
-          operation:
-            type: string
-            const: "ShipmentSent"
-    ShipmentImpossible:
-      contentType: application/json
-      payload:
-        allOf:
-          - $ref: "#/components/schemas/CommonFields"
-          - type: object
-            properties:
-              status:
-                type: string
-                enum: [ "impossible" ]
-              reason:
-                type: string
-              orderedItems:
-                type: array
-                $ref: "#/components/schemas/ShipmentLineItem"
-      headers:
-        type: object
-        properties:
-          messageId:
-            type: string
-            format: uuid
-          operation:
-            type: string
-            const: "ShipmentImpossible"
-    # TODO: Maybe we dont need package contents here, who knows.
-    ShipmentCancelled:
-      contentType: application/json
-      payload:
-        allOf:
-          - $ref: "#/components/schemas/CommonFields"
-          - type: object
-            properties:
-              status:
-                type: string
-                enum: [ "cancelled" ]
-              reason:
-                type: string
-              orderedItems:
-                type: array
-                $ref: "#/components/schemas/ShipmentLineItem"
-              package:
-                allOf:
-                  - $ref: "#/components/schemas/Package"
-                  - type: object
-                    properties:
-                      trackingNumber:
-                          type: string
-                          format: uuid
-      headers:
-        type: object
-        properties:
-          messageId:
-            type: string
-            format: uuid
-          operation:
-            type: string
-            const: "ShipmentCancelled"
+          - $ref: "../common/shippingMessages.yaml#/components/messages/OrderRequested"
+            name: OrderRequested
+            title: OrderRequested
+          - $ref: "../common/shippingMessages.yaml#/components/messages/OrderConfirmed"
+            name: OrderConfirmed
+            title: OrderConfirmed

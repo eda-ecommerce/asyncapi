@@ -1,0 +1,280 @@
+asyncapi: 2.6.0
+components:
+  messages:
+    OrderRequested:
+      name: OrderRequested
+      contentType: application/json
+      payload:
+        type: object
+        $ref: "schemas.yaml#/components/schemas/Order"
+      headers:
+        type: object
+        properties:
+          messageId:
+            type: string
+            format: uuid
+          operation:
+            type: string
+            const: "OrderRequested"
+    OrderConfirmed:
+      name: OrderConfirmed
+      contentType: application/json
+      payload:
+        type: object
+        $ref: "schemas.yaml#/components/schemas/Order"
+      headers:
+        type: object
+        properties:
+          messageId:
+            type: string
+            format: uuid
+          operation:
+            type: string
+            const: "OrderConfirmed"
+    AvailableStockAdjusted:
+      name: AvailableStockAdjusted
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          productId:
+            type: string
+            format: uuid
+          actualStock:
+            type: number
+          reservedStock:
+            type: number
+          availableStock:
+            type: number
+      headers:
+        type: object
+        properties:
+          source:
+            type: string
+            const: "shipping"
+          timestamp:
+            type: integer
+            format: unix
+          operation:
+            type: string
+            const: "stock-reserved"
+    ShipmentRequested:
+      name: ShipmentRequested
+      contentType: application/json
+      payload:
+        allOf:
+          - $ref: "shippingSchemas.yaml#/components/schemas/CommonFields"
+          - type: object
+            properties:
+              status:
+                type: string
+                enum: [ "requested" ]
+              orderedItems:
+                type: array
+                $ref: "shippingSchemas.yaml#/components/schemas/ShipmentLineItem"
+      headers:
+        type: object
+        properties:
+          messageId:
+            type: string
+            format: uuid
+          operation:
+            type: string
+            const: "ShipmentRequested"
+    ShipmentDelivered:
+      contentType: application/json
+      name: ShipmentDelivered
+      payload:
+        allOf:
+          - $ref: "shippingSchemas.yaml#/components/schemas/CommonFields"
+          - type: object
+            properties:
+              status:
+                type: string
+                enum: [ "delivered" ]
+              orderedItems:
+                type: array
+                $ref: "shippingSchemas.yaml#/components/schemas/ShipmentLineItem"
+              package:
+                $ref: "shippingSchemas.yaml#/components/schemas/FullPackage"
+      headers:
+        type: object
+        properties:
+          key:
+            type: string
+            format: uuid
+          messageId:
+            type: string
+            format: uuid
+          timestamp:
+            type: integer
+            format: unix
+          operation:
+            type: string
+            const: "ShipmentDelivered"
+    ShipmentBoxed:
+      name: ShipmentBoxed
+      contentType: application/json
+      payload:
+        allOf:
+          - $ref: "shippingSchemas.yaml#/components/schemas/CommonFields"
+          - type: object
+            properties:
+              status:
+                type: string
+                enum: [ "boxed" ]
+              orderedItems:
+                type: array
+                $ref: "shippingSchemas.yaml#/components/schemas/ShipmentLineItem"
+              package:
+                $ref: "shippingSchemas.yaml#/components/schemas/BoxedPackage"
+      examples:
+        [
+          {
+            "name": "ShipmentBoxed",
+            "headers": {
+              "key": "b61e7b7b-4b7b-4b7b-4b7b-4b7b4b7b4b7b",
+              "messageId": "8540d774-4863-4d2b-b788-4ecb19412e85",
+              "operation": "ShipmentBoxed",
+              "timestamp": "1616425200"
+            },
+            "payload": {
+              "orderId": "b3e1eced-f2bd-4d8c-9765-fbc9d1d222d5",
+              "destination": {
+                "street": "Goethestrasse 11 a",
+                "city": "Trebbin",
+                "state": " Brandenburg",
+                "postalCode": "14959",
+                "country": "Germany"
+              },
+              "origin": {
+                "street": "Theaterstrasse 7",
+                "city": "Blankenburg (Harz)",
+                "state": "Saxony-Anhalt",
+                "postalCode": "38889",
+                "country": "Germany"
+              },
+              "status": "boxed",
+              "orderedItems": [
+                {
+                  "productId": "b3e1eced-f2bd-4d8c-9765-fbc9d1d222d5",
+                  "quantity": 25
+                },
+                {
+                  "productId": "a5e1eced-f2bd-4d8c-9765-fbc9d1d222d5",
+                  "quantity": 10
+                }
+              ],
+              "package": {
+                "package": {
+                  "packageId": "471cc1d4-ec27-4504-b7c2-949af95662bc",
+                  "weight": 69,
+                  "dimensions": {
+                    "width": 5,
+                    "height": 7,
+                    "depth": 3,
+                    "volume": 105
+                  },
+                  "contents": [
+                    {
+                      "productId": "b3e1eced-f2bd-4d8c-9765-fbc9d1d222d5",
+                      "quantity": 25
+                    },
+                    {
+                      "productId": "a5e1eced-f2bd-4d8c-9765-fbc9d1d222d5",
+                      "quantity": 10
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      headers:
+        type: object
+        properties:
+          messageId:
+            type: string
+            format: uuid
+          operation:
+            type: string
+            const: "ShipmentBoxed"
+
+    ShipmentSent:
+      name: ShipmentSent
+      contentType: application/json
+      payload:
+        allOf:
+          - $ref: "shippingSchemas.yaml#/components/schemas/CommonFields"
+          - type: object
+            properties:
+              status:
+                type: string
+                enum: [ "sent" ]
+              orderedItems:
+                type: array
+                $ref: "shippingSchemas.yaml#/components/schemas/ShipmentLineItem"
+              package:
+                $ref: "shippingSchemas.yaml#/components/schemas/FullPackage"
+      headers:
+        type: object
+        properties:
+          messageId:
+            type: string
+            format: uuid
+          operation:
+            type: string
+            const: "ShipmentSent"
+    ShipmentImpossible:
+      name: ShipmentImpossible
+      contentType: application/json
+      payload:
+        allOf:
+          - $ref: "shippingSchemas.yaml#/components/schemas/CommonFields"
+          - type: object
+            properties:
+              status:
+                type: string
+                enum: [ "impossible" ]
+              reason:
+                type: string
+              orderedItems:
+                type: array
+                $ref: "shippingSchemas.yaml#/components/schemas/ShipmentLineItem"
+      headers:
+        type: object
+        properties:
+          messageId:
+            type: string
+            format: uuid
+          operation:
+            type: string
+            const: "ShipmentImpossible"
+    # TODO: Maybe we dont need package contents here, who knows.
+    ShipmentCancelled:
+      name: ShipmentCancelled
+      contentType: application/json
+      payload:
+        allOf:
+          - $ref: "shippingSchemas.yaml#/components/schemas/CommonFields"
+          - type: object
+            properties:
+              status:
+                type: string
+                enum: [ "cancelled" ]
+              reason:
+                type: string
+              orderedItems:
+                type: array
+                $ref: "shippingSchemas.yaml#/components/schemas/ShipmentLineItem"
+              package:
+                $ref: "shippingSchemas.yaml#/components/schemas/BoxedPackage"
+      headers:
+        type: object
+        properties:
+          messageId:
+            type: string
+            format: uuid
+          operation:
+            type: string
+            const: "ShipmentCancelled"
